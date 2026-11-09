@@ -1,7 +1,7 @@
-import streamlit as st
+from typing import Dict, Optional
+
 import requests
-import json
-from typing import Dict
+import streamlit as st
 
 # Page config
 st.set_page_config(
@@ -12,7 +12,12 @@ st.set_page_config(
 )
 
 # API endpoint
-API_URL = "http://localhost:8000/classify-ticket"
+API_BASE_URL = "http://localhost:8000"
+API_URL = f"{API_BASE_URL}/classify-ticket"
+HEALTH_URL = f"{API_BASE_URL}/health"
+# Seconds to wait for the API. Inference runs on CPU and the first request after
+# startup can be slow, so this is generous; without it a hung API hangs the UI.
+REQUEST_TIMEOUT = 30
 
 # Custom CSS for better styling
 st.markdown("""
@@ -87,11 +92,13 @@ st.markdown("""
 # Pre-loaded examples
 EXAMPLES = {
     "🔴 Critical - Production Down": {
-        "text": "URGENT! Production database is down and all customers are affected! We're losing revenue every minute!",
+        "text": "URGENT! Production database is down and all customers are affected! "
+                "We're losing revenue every minute!",
         "tier": "enterprise"
     },
     "🟠 High - Security Issue": {
-        "text": "We have a security breach. Hackers may have compromised customer data. Need immediate help!",
+        "text": "We have a security breach. Hackers may have compromised customer data. "
+                "Need immediate help!",
         "tier": "premium"
     },
     "🟡 Medium - Login Problem": {
@@ -103,31 +110,47 @@ EXAMPLES = {
         "tier": "standard"
     },
     "🎯 Edge Case - Urgent but Positive": {
-        "text": "I'm urgently excited about this new feature! Thanks so much for the amazing update!",
+        "text": "I'm urgently excited about this new feature! "
+                "Thanks so much for the amazing update!",
         "tier": "premium"
     }
 }
 
 
-def classify_ticket(text: str, customer_tier: str, ticket_id: str = None) -> Dict:
-    """Call the API to classify a ticket."""
+def classify_ticket(
+    text: str, customer_tier: str, ticket_id: Optional[str] = None
+) -> Optional[Dict]:
+    """Call the API to classify a ticket. Returns None (after showing an error) on failure."""
+    payload = {
+        "ticket_id": ticket_id or None,
+        "text": text,
+        "customer_tier": customer_tier
+    }
+
     try:
-        payload = {
-            "ticket_id": ticket_id,
-            "text": text,
-            "customer_tier": customer_tier
-        }
-        
-        response = requests.post(API_URL, json=payload)
+        response = requests.post(API_URL, json=payload, timeout=REQUEST_TIMEOUT)
         response.raise_for_status()
         return response.json()
-    
+
     except requests.exceptions.ConnectionError:
-        st.error("❌ Cannot connect to API. Make sure the FastAPI server is running on http://localhost:8000")
-        return None
-    except Exception as e:
-        st.error(f"❌ Error: {str(e)}")
-        return None
+        st.error(
+            f"❌ Cannot connect to API. Make sure the FastAPI server is running on {API_BASE_URL}"
+        )
+    except requests.exceptions.Timeout:
+        st.error(f"❌ The API did not respond within {REQUEST_TIMEOUT} seconds. Try again.")
+    except requests.exceptions.HTTPError as e:
+        # 422 carries FastAPI's validation detail; surface it instead of a bare status code.
+        detail = ""
+        try:
+            detail = e.response.json().get("detail", "")
+        except ValueError:
+            detail = e.response.text
+        st.error(f"❌ API returned HTTP {e.response.status_code}: {detail}")
+    except requests.exceptions.RequestException as e:
+        st.error(f"❌ Request failed: {e}")
+    except ValueError:
+        st.error("❌ API returned a response that is not valid JSON.")
+    return None
 
 
 def display_priority(priority: str):
@@ -183,7 +206,10 @@ def display_keywords(keywords_detected: Dict):
 def main():
     # Header
     st.title("🎫 Ticket Priority Classifier")
-    st.markdown("**AI-powered support ticket prioritization using sentiment analysis and keyword detection**")
+    st.markdown(
+        "**AI-powered support ticket prioritization using sentiment analysis "
+        "and keyword detection**"
+    )
     st.divider()
     
     # Sidebar
@@ -213,12 +239,12 @@ def main():
         # API Status
         st.header("🔌 API Status")
         try:
-            health_response = requests.get("http://localhost:8000/health", timeout=2)
+            health_response = requests.get(HEALTH_URL, timeout=2)
             if health_response.status_code == 200:
                 st.success("✅ API Connected")
             else:
                 st.error("❌ API Error")
-        except:
+        except requests.exceptions.RequestException:
             st.error("❌ API Offline")
             st.markdown("Start the API with: `python main.py`")
     
@@ -348,4 +374,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main()
