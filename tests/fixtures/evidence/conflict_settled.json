@@ -1,0 +1,79 @@
+{
+  "kind": "purchase",
+  "source": "agentic-payments-lab/ledger.export_audit",
+  "source_version": "ddac023eaac8da578bda56cfb489c74992a74422",
+  "captured_at": 1100,
+  "payload": {
+    "mode": "simulated",
+    "purchase_id": "p-12",
+    "request_fingerprint": "6adc4de867b0dacfeab3ce197076d12251e98c44971a951b5af5774e4cd62e42",
+    "grant_id": "grant-research-01",
+    "policy_version": "phase1-v1",
+    "service_id": "report-standard",
+    "merchant_id": "sim-merchant-research",
+    "network": "simulation:local",
+    "asset": "SIM-USDC",
+    "recipient": "sim-merchant-research",
+    "amount": 250000,
+    "payment_state": "settled",
+    "delivery_state": "delivered",
+    "events": [
+      {
+        "sequence": 1,
+        "purchase_id": "p-12",
+        "event_type": "task_created",
+        "data": {
+          "task_id": "task-p-12"
+        },
+        "recorded_at": 101
+      },
+      {
+        "sequence": 2,
+        "purchase_id": "p-12",
+        "event_type": "authorization_decision",
+        "data": {
+          "approved": true,
+          "grant_id": "grant-research-01",
+          "policy_version": "phase1-v1",
+          "fingerprint": "6adc4de867b0dacfeab3ce197076d12251e98c44971a951b5af5774e4cd62e42"
+        },
+        "recorded_at": 102
+      },
+      {
+        "sequence": 3,
+        "purchase_id": "p-12",
+        "event_type": "reserved",
+        "data": {
+          "amount": 250000,
+          "reason": null
+        },
+        "recorded_at": 103
+      },
+      {
+        "sequence": 4,
+        "purchase_id": "p-12",
+        "event_type": "dispatch_recorded",
+        "data": {},
+        "recorded_at": 104
+      },
+      {
+        "sequence": 5,
+        "purchase_id": "p-12",
+        "event_type": "settled",
+        "data": {
+          "reason": null
+        },
+        "recorded_at": 105
+      },
+      {
+        "sequence": 6,
+        "purchase_id": "p-12",
+        "event_type": "delivered",
+        "data": {
+          "reason": null
+        },
+        "recorded_at": 106
+      }
+    ]
+  }
+}

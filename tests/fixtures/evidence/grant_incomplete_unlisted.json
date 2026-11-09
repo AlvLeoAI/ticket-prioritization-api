@@ -1,0 +1,170 @@
+{
+  "kind": "grant",
+  "source": "agentic-payments-lab/ledger.export_audit",
+  "source_version": "ddac023eaac8da578bda56cfb489c74992a74422",
+  "grant_id": "grant-unlisted",
+  "manifest_captured_at": 1100,
+  "manifest": [
+    "p-40"
+  ],
+  "exports": [
+    {
+      "kind": "purchase",
+      "source": "agentic-payments-lab/ledger.export_audit",
+      "source_version": "ddac023eaac8da578bda56cfb489c74992a74422",
+      "captured_at": 1100,
+      "payload": {
+        "mode": "simulated",
+        "purchase_id": "p-40",
+        "request_fingerprint": "0d72657a3ead9cb3a5beeac48f0e74aac33b0759f712f6552eb1e6cc97f34fd8",
+        "grant_id": "grant-unlisted",
+        "policy_version": "phase1-v1",
+        "service_id": "report-standard",
+        "merchant_id": "sim-merchant-research",
+        "network": "simulation:local",
+        "asset": "SIM-USDC",
+        "recipient": "sim-merchant-research",
+        "amount": 250000,
+        "payment_state": "settled",
+        "delivery_state": "delivered",
+        "events": [
+          {
+            "sequence": 1,
+            "purchase_id": "p-40",
+            "event_type": "task_created",
+            "data": {
+              "task_id": "task-p-40"
+            },
+            "recorded_at": 101
+          },
+          {
+            "sequence": 2,
+            "purchase_id": "p-40",
+            "event_type": "authorization_decision",
+            "data": {
+              "approved": true,
+              "grant_id": "grant-research-01",
+              "policy_version": "phase1-v1",
+              "fingerprint": "0d72657a3ead9cb3a5beeac48f0e74aac33b0759f712f6552eb1e6cc97f34fd8"
+            },
+            "recorded_at": 102
+          },
+          {
+            "sequence": 3,
+            "purchase_id": "p-40",
+            "event_type": "reserved",
+            "data": {
+              "amount": 250000,
+              "reason": null
+            },
+            "recorded_at": 103
+          },
+          {
+            "sequence": 4,
+            "purchase_id": "p-40",
+            "event_type": "dispatch_recorded",
+            "data": {},
+            "recorded_at": 104
+          },
+          {
+            "sequence": 5,
+            "purchase_id": "p-40",
+            "event_type": "settled",
+            "data": {
+              "reason": null
+            },
+            "recorded_at": 105
+          },
+          {
+            "sequence": 6,
+            "purchase_id": "p-40",
+            "event_type": "delivered",
+            "data": {
+              "reason": null
+            },
+            "recorded_at": 106
+          }
+        ]
+      }
+    },
+    {
+      "kind": "purchase",
+      "source": "agentic-payments-lab/ledger.export_audit",
+      "source_version": "ddac023eaac8da578bda56cfb489c74992a74422",
+      "captured_at": 1100,
+      "payload": {
+        "mode": "simulated",
+        "purchase_id": "p-41",
+        "request_fingerprint": "a90d2fefa00654e153cacc40ee449eeaa5bf02a6f71a2ed0844de1dae7dba23f",
+        "grant_id": "grant-unlisted",
+        "policy_version": "phase1-v1",
+        "service_id": "report-standard",
+        "merchant_id": "sim-merchant-research",
+        "network": "simulation:local",
+        "asset": "SIM-USDC",
+        "recipient": "sim-merchant-research",
+        "amount": 250000,
+        "payment_state": "settled",
+        "delivery_state": "delivered",
+        "events": [
+          {
+            "sequence": 1,
+            "purchase_id": "p-41",
+            "event_type": "task_created",
+            "data": {
+              "task_id": "task-p-41"
+            },
+            "recorded_at": 101
+          },
+          {
+            "sequence": 2,
+            "purchase_id": "p-41",
+            "event_type": "authorization_decision",
+            "data": {
+              "approved": true,
+              "grant_id": "grant-research-01",
+              "policy_version": "phase1-v1",
+              "fingerprint": "a90d2fefa00654e153cacc40ee449eeaa5bf02a6f71a2ed0844de1dae7dba23f"
+            },
+            "recorded_at": 102
+          },
+          {
+            "sequence": 3,
+            "purchase_id": "p-41",
+            "event_type": "reserved",
+            "data": {
+              "amount": 250000,
+              "reason": null
+            },
+            "recorded_at": 103
+          },
+          {
+            "sequence": 4,
+            "purchase_id": "p-41",
+            "event_type": "dispatch_recorded",
+            "data": {},
+            "recorded_at": 104
+          },
+          {
+            "sequence": 5,
+            "purchase_id": "p-41",
+            "event_type": "settled",
+            "data": {
+              "reason": null
+            },
+            "recorded_at": 105
+          },
+          {
+            "sequence": 6,
+            "purchase_id": "p-41",
+            "event_type": "delivered",
+            "data": {
+              "reason": null
+            },
+            "recorded_at": 106
+          }
+        ]
+      }
+    }
+  ]
+}
