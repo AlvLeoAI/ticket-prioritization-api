@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/AlvLeoAI/ticket-prioritization-api/eval/cases.schema.json",
+  "title": "Evaluation case",
+  "description": "One line of eval/cases.jsonl. `expected_priority` is null until a human labels the case against docs/priority-policy.md; the eval script reports unlabeled cases separately and never guesses a label.",
+  "type": "object",
+  "required": ["id", "text", "customer_tier", "expected_priority"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable identifier, unique within the file."
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Ticket text exactly as it would be sent to the API."
+    },
+    "customer_tier": {
+      "type": "string",
+      "enum": ["standard", "premium", "enterprise", "free"]
+    },
+    "expected_priority": {
+      "type": ["string", "null"],
+      "enum": ["critical", "high", "medium", "low", null],
+      "description": "Human-assigned label, or null if not yet labeled."
+    },
+    "sentiment_override": {
+      "type": "object",
+      "required": ["label", "confidence"],
+      "additionalProperties": false,
+      "description": "Optional. Bypasses the sentiment model so a case is deterministic (e.g. to hold sentiment constant). Without it the eval runs the real model.",
+      "properties": {
+        "label": { "type": "string", "enum": ["NEGATIVE", "POSITIVE"] },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Why this case is in the set."
+    }
+  }
+}
