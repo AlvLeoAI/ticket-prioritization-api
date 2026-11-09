@@ -1,0 +1,18 @@
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+extend-exclude = [".venv"]
+
+[tool.ruff.lint]
+# Default rules plus import sorting. Kept narrow on purpose: this phase freezes the
+# baseline behaviour, so the lint set must not push rewrites of the scoring code.
+select = ["E", "F", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "--strict-markers"
+filterwarnings = [
+    # fastapi 0.104's TestClient uses the httpx `app=` shortcut; httpx is pinned below 0.28.
+    "ignore:The 'app' shortcut is now deprecated:DeprecationWarning",
+]

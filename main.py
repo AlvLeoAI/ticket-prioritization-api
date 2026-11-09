@@ -1,8 +1,10 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-from transformers import pipeline
-from typing import Optional
 import logging
+from enum import Enum
+from typing import Optional
+
+from fastapi import FastAPI
+from pydantic import BaseModel, ConfigDict, field_validator
+from transformers import pipeline
 
 # Import our classification logic
 from utils import classify_ticket_advanced
@@ -15,7 +17,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI(
     title="Ticket Prioritization API",
     description="Advanced sentiment analysis API for support ticket urgency classification",
-    version="0.2.0"  # Updated version!
+    version="0.3.0"
 )
 
 # Load Hugging Face model
@@ -28,25 +30,44 @@ logger.info("Model loaded successfully!")
 
 
 # Define request/response models
-class TicketRequest(BaseModel):
-    ticket_id: Optional[str] = None
-    text: str
-    customer_tier: Optional[str] = "standard"
+class CustomerTier(str, Enum):
+    """Tiers the scoring engine knows about (see TIER_MULTIPLIERS in config.py)."""
 
-    class Config:
-        json_schema_extra = {
+    standard = "standard"
+    premium = "premium"
+    enterprise = "enterprise"
+    free = "free"
+
+
+class TicketRequest(BaseModel):
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "ticket_id": "TKT-001",
                 "text": "URGENT! Production system is down and customers cannot checkout!",
-                "customer_tier": "enterprise"
+                "customer_tier": "enterprise",
             }
         }
+    )
+
+    ticket_id: Optional[str] = None
+    text: str
+    # Omitting the field defaults to "standard"; an explicit null or unknown tier is a 422.
+    customer_tier: CustomerTier = CustomerTier.standard
+
+    @field_validator("customer_tier", mode="before")
+    @classmethod
+    def _lowercase_tier(cls, value):
+        # The scoring engine always lower-cased the tier, so "Enterprise" stays valid.
+        return value.lower() if isinstance(value, str) else value
 
 
 class TicketResponse(BaseModel):
     ticket_id: Optional[str]
     priority: str
-    confidence: float
+    # Renamed from `confidence` in 0.3.0: this is the sentiment model's confidence in its
+    # label, not a confidence in the priority.
+    sentiment_confidence: float
     sentiment: str
     sentiment_score: float
     final_score: float
@@ -56,7 +77,7 @@ class TicketResponse(BaseModel):
 @app.get("/")
 async def root():
     return {
-        "message": "Ticket Prioritization API v0.2.0",
+        "message": "Ticket Prioritization API v0.3.0",
         "status": "running",
         "features": [
             "Multi-dimensional scoring",
@@ -77,32 +98,34 @@ async def health_check():
     return {
         "status": "healthy",
         "model_loaded": True,
-        "version": "0.2.0"
+        "version": "0.3.0"
     }
 
 
 @app.post("/classify-ticket", response_model=TicketResponse)
-async def classify_ticket(ticket: TicketRequest):
+def classify_ticket(ticket: TicketRequest):
     """
-    Classify a support ticket using advanced multi-dimensional scoring.
-    
-    Combines:
-    - Sentiment analysis (35%)
-    - Keyword detection (45%) 
-    - Customer tier (20%)
+    Classify a support ticket using multi-dimensional scoring.
+
+    Combines sentiment analysis, keyword detection and a customer-tier multiplier;
+    the exact formula is documented in README.md.
+
+    Deliberately a plain `def`: the Hugging Face pipeline call is synchronous and
+    CPU-bound, so FastAPI runs this handler in its threadpool instead of blocking
+    the event loop.
     """
-    
+
     # Get sentiment from Hugging Face model
     result = sentiment_analyzer(ticket.text)[0]
     sentiment = result['label']
     sentiment_score = result['score']
-    
+
     # Use advanced classification
     classification = classify_ticket_advanced(
         text=ticket.text,
         sentiment=sentiment,
         sentiment_confidence=sentiment_score,
-        customer_tier=ticket.customer_tier
+        customer_tier=ticket.customer_tier.value
     )
     
     logger.info(
@@ -113,7 +136,7 @@ async def classify_ticket(ticket: TicketRequest):
     return TicketResponse(
         ticket_id=ticket.ticket_id,
         priority=classification['priority'],
-        confidence=sentiment_score,
+        sentiment_confidence=sentiment_score,
         sentiment=sentiment.lower(),
         sentiment_score=sentiment_score,
         final_score=classification['final_score'],

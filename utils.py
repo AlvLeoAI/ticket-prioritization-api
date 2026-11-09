@@ -1,11 +1,15 @@
 """
 Utility functions for ticket classification
 """
-import re
-from typing import Dict, List, Tuple
+from typing import Dict
+
 from config import (
-    CRITICAL_KEYWORDS, HIGH_KEYWORDS, POSITIVE_KEYWORDS,
-    TIER_MULTIPLIERS, WEIGHTS, PRIORITY_THRESHOLDS
+    CRITICAL_KEYWORDS,
+    HIGH_KEYWORDS,
+    POSITIVE_KEYWORDS,
+    PRIORITY_THRESHOLDS,
+    TIER_MULTIPLIERS,
+    WEIGHTS,
 )
 
 
