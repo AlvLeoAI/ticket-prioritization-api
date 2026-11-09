@@ -1,0 +1,242 @@
+{
+  "kind": "grant",
+  "source": "agentic-payments-lab/ledger.export_audit",
+  "source_version": "ddac023eaac8da578bda56cfb489c74992a74422",
+  "grant_id": "grant-single",
+  "manifest_captured_at": 1100,
+  "manifest": [
+    "p-20",
+    "p-21",
+    "p-22"
+  ],
+  "exports": [
+    {
+      "kind": "purchase",
+      "source": "agentic-payments-lab/ledger.export_audit",
+      "source_version": "ddac023eaac8da578bda56cfb489c74992a74422",
+      "captured_at": 1100,
+      "payload": {
+        "mode": "simulated",
+        "purchase_id": "p-20",
+        "request_fingerprint": "0d6d5bfc11e00185a953d7dffc9309e66fcdb82b05685f91922e20737196b2d9",
+        "grant_id": "grant-single",
+        "policy_version": "phase1-v1",
+        "service_id": "report-standard",
+        "merchant_id": "sim-merchant-research",
+        "network": "simulation:local",
+        "asset": "SIM-USDC",
+        "recipient": "sim-merchant-research",
+        "amount": 250000,
+        "payment_state": "settled",
+        "delivery_state": "delivered",
+        "events": [
+          {
+            "sequence": 1,
+            "purchase_id": "p-20",
+            "event_type": "task_created",
+            "data": {
+              "task_id": "task-p-20"
+            },
+            "recorded_at": 101
+          },
+          {
+            "sequence": 2,
+            "purchase_id": "p-20",
+            "event_type": "authorization_decision",
+            "data": {
+              "approved": true,
+              "grant_id": "grant-research-01",
+              "policy_version": "phase1-v1",
+              "fingerprint": "909e8b59212129dc6f9e6f8002aa18122ef7ab19ad9a09bec062e3a738365e78"
+            },
+            "recorded_at": 102
+          },
+          {
+            "sequence": 3,
+            "purchase_id": "p-20",
+            "event_type": "reserved",
+            "data": {
+              "amount": 250000,
+              "reason": null
+            },
+            "recorded_at": 103
+          },
+          {
+            "sequence": 4,
+            "purchase_id": "p-20",
+            "event_type": "dispatch_recorded",
+            "data": {},
+            "recorded_at": 104
+          },
+          {
+            "sequence": 5,
+            "purchase_id": "p-20",
+            "event_type": "settled",
+            "data": {
+              "reason": null
+            },
+            "recorded_at": 105
+          },
+          {
+            "sequence": 6,
+            "purchase_id": "p-20",
+            "event_type": "delivered",
+            "data": {
+              "reason": null
+            },
+            "recorded_at": 106
+          }
+        ]
+      }
+    },
+    {
+      "kind": "purchase",
+      "source": "agentic-payments-lab/ledger.export_audit",
+      "source_version": "ddac023eaac8da578bda56cfb489c74992a74422",
+      "captured_at": 1110,
+      "payload": {
+        "mode": "simulated",
+        "purchase_id": "p-21",
+        "request_fingerprint": "0d6d5bfc11e00185a953d7dffc9309e66fcdb82b05685f91922e20737196b2d9",
+        "grant_id": "grant-single",
+        "policy_version": "phase1-v1",
+        "service_id": "report-standard",
+        "merchant_id": "sim-merchant-research",
+        "network": "simulation:local",
+        "asset": "SIM-USDC",
+        "recipient": "sim-merchant-research",
+        "amount": 250000,
+        "payment_state": "failed",
+        "delivery_state": "not_requested",
+        "events": [
+          {
+            "sequence": 1,
+            "purchase_id": "p-21",
+            "event_type": "task_created",
+            "data": {
+              "task_id": "task-p-21"
+            },
+            "recorded_at": 101
+          },
+          {
+            "sequence": 2,
+            "purchase_id": "p-21",
+            "event_type": "authorization_decision",
+            "data": {
+              "approved": true,
+              "grant_id": "grant-research-01",
+              "policy_version": "phase1-v1",
+              "fingerprint": "223b810c6df23a713d9bf8ce2a0b384961872fcddb2daef97d3bdc9b758ee53c"
+            },
+            "recorded_at": 102
+          },
+          {
+            "sequence": 3,
+            "purchase_id": "p-21",
+            "event_type": "reserved",
+            "data": {
+              "amount": 250000,
+              "reason": null
+            },
+            "recorded_at": 103
+          },
+          {
+            "sequence": 4,
+            "purchase_id": "p-21",
+            "event_type": "dispatch_recorded",
+            "data": {},
+            "recorded_at": 104
+          },
+          {
+            "sequence": 5,
+            "purchase_id": "p-21",
+            "event_type": "failed",
+            "data": {
+              "reason": "x"
+            },
+            "recorded_at": 105
+          }
+        ]
+      }
+    },
+    {
+      "kind": "purchase",
+      "source": "agentic-payments-lab/ledger.export_audit",
+      "source_version": "ddac023eaac8da578bda56cfb489c74992a74422",
+      "captured_at": 1120,
+      "payload": {
+        "mode": "simulated",
+        "purchase_id": "p-22",
+        "request_fingerprint": "103856dcd86dc964a96f78949871eb85630b597851186bcf2506cc4ff8ca42b6",
+        "grant_id": "grant-single",
+        "policy_version": "phase1-v1",
+        "service_id": "report-standard",
+        "merchant_id": "sim-merchant-research",
+        "network": "simulation:local",
+        "asset": "SIM-USDC",
+        "recipient": "sim-merchant-research",
+        "amount": 250000,
+        "payment_state": "settled",
+        "delivery_state": "delivered",
+        "events": [
+          {
+            "sequence": 1,
+            "purchase_id": "p-22",
+            "event_type": "task_created",
+            "data": {
+              "task_id": "task-p-22"
+            },
+            "recorded_at": 101
+          },
+          {
+            "sequence": 2,
+            "purchase_id": "p-22",
+            "event_type": "authorization_decision",
+            "data": {
+              "approved": true,
+              "grant_id": "grant-research-01",
+              "policy_version": "phase1-v1",
+              "fingerprint": "b9567250148d7d83e6e50477a7b34a10474e0ebf72fb38f5e7aca40b6674c554"
+            },
+            "recorded_at": 102
+          },
+          {
+            "sequence": 3,
+            "purchase_id": "p-22",
+            "event_type": "reserved",
+            "data": {
+              "amount": 250000,
+              "reason": null
+            },
+            "recorded_at": 103
+          },
+          {
+            "sequence": 4,
+            "purchase_id": "p-22",
+            "event_type": "dispatch_recorded",
+            "data": {},
+            "recorded_at": 104
+          },
+          {
+            "sequence": 5,
+            "purchase_id": "p-22",
+            "event_type": "settled",
+            "data": {
+              "reason": null
+            },
+            "recorded_at": 105
+          },
+          {
+            "sequence": 6,
+            "purchase_id": "p-22",
+            "event_type": "delivered",
+            "data": {
+              "reason": null
+            },
+            "recorded_at": 106
+          }
+        ]
+      }
+    }
+  ]
+}

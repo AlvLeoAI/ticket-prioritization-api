@@ -1,0 +1,54 @@
+{
+  "kind": "purchase",
+  "source": "agentic-payments-lab/ledger.export_audit",
+  "source_version": "ddac023eaac8da578bda56cfb489c74992a74422",
+  "captured_at": 1100,
+  "payload": {
+    "mode": "simulated",
+    "purchase_id": "p-07",
+    "request_fingerprint": "51560d9bfdba48625157e546325c2e43561bdb1a396dd890483f50e0f4cfe27c",
+    "grant_id": "grant-research-01",
+    "policy_version": "phase1-v1",
+    "service_id": "report-standard",
+    "merchant_id": "sim-merchant-research",
+    "network": "simulation:local",
+    "asset": "SIM-USDC",
+    "recipient": "sim-merchant-research",
+    "amount": 250000,
+    "payment_state": "denied",
+    "delivery_state": "not_requested",
+    "events": [
+      {
+        "sequence": 1,
+        "purchase_id": "p-07",
+        "event_type": "task_created",
+        "data": {
+          "task_id": "task-p-07"
+        },
+        "recorded_at": 101
+      },
+      {
+        "sequence": 2,
+        "purchase_id": "p-07",
+        "event_type": "authorization_decision",
+        "data": {
+          "approved": false,
+          "grant_id": "grant-research-01",
+          "policy_version": "phase1-v1",
+          "fingerprint": "51560d9bfdba48625157e546325c2e43561bdb1a396dd890483f50e0f4cfe27c"
+        },
+        "recorded_at": 102
+      },
+      {
+        "sequence": 3,
+        "purchase_id": "p-07",
+        "event_type": "denied",
+        "data": {
+          "amount": 250000,
+          "reason": "insufficient_budget"
+        },
+        "recorded_at": 103
+      }
+    ]
+  }
+}

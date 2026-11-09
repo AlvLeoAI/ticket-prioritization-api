@@ -5,11 +5,28 @@ model. Before anything imports `main`, this file installs a stub `transformers` 
 `pipeline()` returns a controllable fake, so the suite runs offline and without torch.
 """
 
+import json
 import sys
 import types
+from pathlib import Path
 from typing import Dict, List
 
 import pytest
+
+EVIDENCE_DIR = Path(__file__).parent / "fixtures" / "evidence"
+
+
+def load_evidence(name: str):
+    """Parse one synthetic evidence fixture (see tests/fixtures/evidence/generate.py)."""
+    from triage.evidence import parse_evidence
+
+    with open(EVIDENCE_DIR / f"{name}.json", encoding="utf-8") as handle:
+        return parse_evidence(json.load(handle))
+
+
+@pytest.fixture
+def evidence():
+    return load_evidence
 
 
 class FakeSentimentPipeline:
