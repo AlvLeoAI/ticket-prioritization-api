@@ -180,6 +180,13 @@ The refactor is staged so that each step can be checked against the previous one
 
 - **Phase 0 (this version): honesty and robustness.** Baseline frozen as `v0-baseline`;
   input validation; characterization tests; CI; eval harness with an empty policy template.
+- **Phase 1a (this branch): evidence contract and deterministic verifier.** The `triage/`
+  package takes a structured claim (`charged_not_delivered`, `duplicate_charge`,
+  `unauthorized_purchase`, `charged_but_denied`) plus evidence exported from
+  [Agentic-Payments-Lab](https://github.com/AlvLeoAI/Agentic-Payments-Lab) and returns
+  `confirmed`, `contradicted` or `unverifiable` with a reason code. Ticket text is never
+  evidence, nothing is decided, and no priority is assigned. See
+  [docs/evidence-contract.md](docs/evidence-contract.md). It is not wired into the API yet.
 - **Phase 1: written priority policy and a labeled eval set.** Fill in
   `docs/priority-policy.md`, then label `eval/cases.jsonl` against it and grow the set.
   Only then can the baseline's quality be stated.
@@ -220,12 +227,21 @@ ticket-prioritization-api/
 ├── config.py                   # Keyword lists, multipliers, weights, thresholds
 ├── requirements.txt            # Runtime dependencies
 ├── requirements-dev.txt        # Test and lint dependencies
+├── triage/                     # Evidence contract + deterministic verifier (Phase 1a)
+│   ├── payments_lab.py         # Mirror of the pinned Payments-Lab audit export
+│   ├── evidence.py             # PurchaseEvidence / GrantEvidence envelopes
+│   ├── claims.py               # Structured claims (no ticket text)
+│   ├── verifier.py             # verify(claim, evidence) -> VerificationResult
+│   ├── config.py               # Placeholder parameters (not policy)
+│   └── source.py               # Pinned upstream repository and commit
 ├── tests/                      # pytest suite (HF pipeline stubbed)
+│   └── fixtures/evidence/      # Synthetic exports + generate.py
 ├── eval/
 │   ├── cases.schema.json       # Schema for one eval case
 │   ├── cases.jsonl             # Eval cases (unlabeled seed set)
 │   └── run_eval.py             # Confusion matrix + critical-class recall
 ├── docs/priority-policy.md     # Priority policy (empty template)
+├── docs/evidence-contract.md   # Envelopes, outcomes, reason codes, pinned source
 └── .github/workflows/ci.yml    # ruff + pytest
 ```
 
